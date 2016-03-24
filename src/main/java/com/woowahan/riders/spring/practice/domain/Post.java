@@ -16,6 +16,8 @@ public class Post {
     private String title;
     private String content;
     @ManyToOne
+    private Board board;
+    @ManyToOne
     private Writer writer;
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
@@ -25,18 +27,23 @@ public class Post {
     private Post() {}
 
 
-    public static Post of (String title, String content, Writer writer ){
+    public static Post of (Board board, String title, String content, Writer writer ){
         Post post = new Post();
 
         post.title = title;
         post.content = content;
         post.writer = writer;
         post.createdDateTime = new Date();
+        board.addPost(post);
         writer.appendPost(post);
-
         return post;
 
     }
+
+    public void amendBoard(Board board) {
+        this.board = board;
+    }
+
     public Long getId() {
         return id;
     }
